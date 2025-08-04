@@ -1,0 +1,15 @@
+#(40-43)
+alert ip any any -> any any (msg:"Service May Go Down"; flow:stateless; threshold:type both, track by_src, count 10, seconds 10; sid:100001; rev:1;)
+alert http any any -> any any (msg:"Wrong SELECT Access to Stored Data"; content:"SELECT"; nocase; http_uri; sid:100070; rev:1;)
+alert http any any -> any any (msg:"Wrong UNION SELECT Access to Stored Data"; content:"UNION SELECT"; nocase; http_uri; sid:100070; rev:2;)
+alert http any any -> any any (msg:"Wrong attempt to Access Stored Data "; nocase; http_client_body; sid:100071; rev:1;)
+
+#(46)
+alert tcp any any -> any any (msg:"Dark Web Access Detected"; content:"tor"; nocase; sid:100005; rev:1;)
+
+#(49-50)
+alert http any any -> any any (msg:"Dangerous Download Detected"; fileext:"com"; sid:100010; rev:1;)
+alert http any any -> any any (msg:"Malware Download Attempt Detected"; fileext:"com"; fileext:"bat"; fileext:"cmd"; fileext:"js"; fileext:"vbs"; fileext:"dll"; sid:100011; rev:1;)
+
+#(51)
+drop ip [192.168.153.132] any -> any any (msg:"Blocked Malicious IP Address"; sid:100040; rev:1;)
